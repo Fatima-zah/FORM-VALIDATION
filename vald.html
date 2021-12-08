@@ -8,16 +8,18 @@
 </head>
 <body>
     <form>
+        
         <label for="titre">Titre:</label><input id="titre" type="text"><p id="p_titre"></p><br>
         <label for="auteur">Auteur:</label><input id="auteur" type="text"><p id="p_auteur"></p><br>
         <label for="prix">Prix:</label><input id="prix" type="text"> <p id="p_prix"></p><br>
-        <label for="date">Date Publication:</label><input id="date" type="date"><br>
+        <label for="date">Date Publication:</label><input id="date" type="date"><p id="p_date"></p><br>
         <label for="langue">Langues:</label>
         <select id="langue">
+            <option value>select</option>
             <option>Français</option>
             <option>Anglais</option>
             <option>Arab</option>
-        </select><br>
+        </select><p id="p_date"></p><br>
         Roman<input name="radioBtn" type="radio">
         Essai<input name="radioBtn" type="radio">
         Bande-Dessinée<input name="radioBtn" type="radio"><br>
@@ -30,11 +32,12 @@
         var prix = document.getElementById("prix");
         var date = document.getElementById("date");
         var myform = document.getElementsByTagName("form")[0];
+        var lang = document.getElementById("langue");
 
         function submit_form(e){
             e.preventDefault();
            
-            if(titre.value.length>3){
+            if(titre.value.length>30){
 
                 var errorp=document.getElementById("p_titre");
                 errorp.innerHTML=('vous avez depassez le maximum lettres');
@@ -60,7 +63,39 @@
                 var errorp=document.getElementById('p_prix');
                 errorp.innerHTML=('Ne laissez pas vide!');
                 errorp.style.color='red';
-        }
+            }
+                //PRIX
+             if(isNaN(prix.value)){
+                prix.style.borderColor = "red"
+                prix.nextElementSibling.innerHTML = "juste des nombres";
+                prix.nextElementSibling.style.color = "red";
+             }
+
+        
+            //DATE
+            if(date.value==""){
+                var errorp=document.getElementById('p_date');
+                errorp.innerHTML=('Ne laissez pas vide!');
+                errorp.style.color='red';
+            }
+        
+            //PRIX
+             if(isNaN(prix.value)){
+                prix.style.borderColor = "red"
+                prix.nextElementSibling.innerHTML = "juste des nombres";
+                prix.nextElementSibling.style.color = "red";
+             }
+             //langue
+            if(lang.value == ""){
+                lang.style.borderColor = "red"
+                lang.nextElementSibling.style.color = "red";
+                lang.nextElementSibling.innerHTML = "shoisir une langue"
+            }
+            else{
+                lang.style.borderColor = "green"
+                lang.nextElementSibling.style.color = "green";
+                lang.nextElementSibling.innerHTML = "ok"
+            }
 
     }
         myform.addEventListener("submit",submit_form);
