@@ -20,11 +20,24 @@
             <option>Anglais</option>
             <option>Arab</option>
         </select><p id="p_date"></p><br>
-        Roman<input name="radioBtn" type="radio">
-        Essai<input name="radioBtn" type="radio">
-        Bande-Dessinée<input name="radioBtn" type="radio"><br>
+        Roman<input class="check" name="radioBtn" type="radio">
+        Essai<input class="check" name="radioBtn" type="radio">
+        Bande-Dessinée<input class="check" name="radioBtn" type="radio"><br>
+        <p id="errorType"></p>
         <input id="submitBtn" type="submit">
     </form>
+    <table id="table" border="1">
+        <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Prix</th>
+            <th>Date de publication</th>
+            <th>Langue</th>
+            <th>Type</th>
+            <th></th>
+        </tr>
+
+    </table>
 
     <script>
         var titre = document.getElementById("titre");
@@ -33,6 +46,8 @@
         var date = document.getElementById("date");
         var myform = document.getElementsByTagName("form")[0];
         var lang = document.getElementById("langue");
+        var books_type = document.getElementsByClassName("check");
+        var errorType=document.getElementById("errorType");
 
         function submit_form(e){
             e.preventDefault();
@@ -59,12 +74,12 @@
                 errorp.innerHTML=('Ne laissez pas vide!');
                 errorp.style.color='red';
         }
+            //PRIX
             if(prix.value==""){
                 var errorp=document.getElementById('p_prix');
                 errorp.innerHTML=('Ne laissez pas vide!');
                 errorp.style.color='red';
             }
-                //PRIX
              if(isNaN(prix.value)){
                 prix.style.borderColor = "red"
                 prix.nextElementSibling.innerHTML = "juste des nombres";
@@ -96,10 +111,20 @@
                 lang.nextElementSibling.style.color = "green";
                 lang.nextElementSibling.innerHTML = "ok"
             }
+            if (!(books_type[0].checked || books_type[1].checked || books_type[2].checked)){
+            form_ok = false;
+            errorType.innerHTML ='selectioner un type';
+            errorType.style.color ='red';
+    }
+             else {
+             errorType.innerHTML = 'ok';
+             errorType.style.color = 'green'; 
+            }
 
     }
         myform.addEventListener("submit",submit_form);
 
+       
     </script>
 </body>
 </html>
