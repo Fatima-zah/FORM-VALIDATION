@@ -11,20 +11,20 @@
         
         <label for="titre">Titre:</label><input id="titre" type="text"><p id="p_titre"></p><br>
         <label for="auteur">Auteur:</label><input id="auteur" type="text"><p id="p_auteur"></p><br>
-        <label for="prix">Prix:</label><input id="prix" type="text"> <p id="p_prix"></p><br>
+        <label for="prix">Prix:</label><input id="prix" type="text"><p id="p_prix"></p><br>
         <label for="date">Date Publication:</label><input id="date" type="date"><p id="p_date"></p><br>
         <label for="langue">Langues:</label>
         <select id="langue">
-            <option value>select</option>
+            <option disabled selected hidden value>select</option>
             <option>Français</option>
             <option>Anglais</option>
-            <option>Arab</option>
+            <option>Arabic</option>
         </select><p id="p_date"></p><br>
-        Roman<input class="check" name="radioBtn" type="radio">
-        Essai<input class="check" name="radioBtn" type="radio">
-        Bande-Dessinée<input class="check" name="radioBtn" type="radio"><br>
+        Roman<input class="check" value="Roman" name="radioBtn" type="radio">
+        Essai<input class="check" value="Essai" name="radioBtn" type="radio">
+        Bande-Dessinée<input class="check" value="Bande-Dessinée" name="radioBtn" type="radio"><br>
         <p id="errorType"></p>
-        <input id="submitBtn" type="submit">
+        <input id="submitBtn" type="submit" value="Envoyer">
     </form>
     <table id="table" border="1">
         <tr>
@@ -34,7 +34,7 @@
             <th>Date de publication</th>
             <th>Langue</th>
             <th>Type</th>
-            <th></th>
+            <th>delete/edit</th>
         </tr>
 
     </table>
@@ -48,6 +48,8 @@
         var lang = document.getElementById("langue");
         var books_type = document.getElementsByClassName("check");
         var errorType=document.getElementById("errorType");
+        var myTable = document.getElementById("table");
+        var submit_btn = document.getElementById("submitBtn");
 
         function submit_form(e){
             e.preventDefault();
@@ -64,6 +66,11 @@
                 errorp.innerHTML=('Ne laissez pas vide!');
                 errorp.style.color='red';
         }
+        else{
+                auteur.style.borderColor = "green"
+                auteur.nextElementSibling.style.color = "green";
+                auteur.nextElementSibling.innerHTML = "ok"
+            }
             if(auteur.value.length>3){
                 var errorp=document.getElementById('p_auteur');
                 errorp.innerHTML=('vous avez depassez le maximum lettres');
@@ -100,6 +107,11 @@
                 prix.nextElementSibling.innerHTML = "juste des nombres";
                 prix.nextElementSibling.style.color = "red";
              }
+             else{
+                prix.style.borderColor = "green"
+                prix.nextElementSibling.style.color = "green";
+                prix.nextElementSibling.innerHTML = "ok"
+            }
              //langue
             if(lang.value == ""){
                 lang.style.borderColor = "red"
@@ -113,18 +125,86 @@
             }
             if (!(books_type[0].checked || books_type[1].checked || books_type[2].checked)){
             form_ok = false;
-            errorType.innerHTML ='selectioner un type';
+            errorType.innerHTML ='please select a type';
             errorType.style.color ='red';
     }
-             else {
-             errorType.innerHTML = 'ok';
-             errorType.style.color = 'green'; 
+         else {
+          errorType.innerHTML = 'good!';
+          errorType.style.color = 'green'; 
+          }
+
+              
+          
+       var row = myTable.insertRow(-1);
+       var cell1 = row.insertCell(0);
+       var cell2 = row.insertCell(1);
+       var cell3 = row.insertCell(2);
+       var cell4 = row.insertCell(3);
+       var cell5 = row.insertCell(4);
+       var cell6 = row.insertCell(5);
+       var cell7 = row.insertCell(6);
+
+
+       cell1.innerHTML = titre.value;
+       cell2.innerHTML = auteur.value;
+       cell3.innerHTML = prix.value;
+       cell4.innerHTML = date.value;
+       cell5.innerHTML = lang.value;
+       
+       for(var i=0;i<3;i++){
+        if(books_type[i].checked==true){
+            cell6.innerHTML = books_type[i].value;
+            break;
+        }
+       }
+       cell7.innerHTML = "<input type='button' value='Delete' onclick='supprimer(this)'><input type='button' value='Modifier' onclick='modifier(this)'>"
+    }
+
+    function supprimer(btn){
+        var i = btn.parentNode.parentNode.rowIndex;
+        myTable.deleteRow(i);
+    }
+
+    function modifier(btn){
+        var i = btn.parentNode.parentNode.rowIndex;
+        var row = myTable.rows[i];
+
+        if(btn.value == "Modifier"){
+            titre.value = row.cells[0].innerHTML;
+            auteur.value = row.cells[1].innerHTML;
+            prix.value = row.cells[2].innerHTML;
+            date.value = row.cells[3].innerHTML;
+            lang.value = row.cells[4].innerHTML;
+            
+            for(var i=0;i<3;i++){
+                if(row.cells[5].innerHTML==books_type[i].value){
+                    books_type[i].checked = true;
+                    break;
+                }
             }
 
-    }
-        myform.addEventListener("submit",submit_form);
+            submit_btn.setAttribute("disabled","true");
+            btn.value = "Enregistrer";
+        }
+        else{
+            row.cells[0].innerHTML = titre.value;
+            row.cells[1].innerHTML = auteur.value;
+            row.cells[2].innerHTML = prix.value;
+            row.cells[3].innerHTML = date.value;
+            row.cells[4].innerHTML = lang.value;
+            btn.value = "Modifier";
+            submit_btn.removeAttribute("disabled")
+        }
+        
 
-       
+    }
+
+    myform.addEventListener("submit",submit_form);
+        
+
+
+        
+
     </script>
 </body>
 </html>
